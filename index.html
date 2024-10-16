@@ -163,7 +163,7 @@
                         <label for="squawk-${plan.id}">Squawk:</label>
                         <input type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
                         <button onclick="saveChanges(${plan.id})">Save Changes</button>
-                        <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
+                        <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Flight Plan</button>
                     </div>
                 </div>
             `).join('');
@@ -179,7 +179,7 @@
                 localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
                 
                 document.getElementById(`sid-display-${id}`).textContent = updatedPlan.sid;
-                document.getElementById(`squawk-display-${id}`).textContent = updatedPlan.squawk || 'Not assigned';
+                document.getElementById(`squawk-display-${id}`).textContent = updatedPlan.squawk || 'To be assigned.';
                 
                 alert('Flight plan updated successfully!');
             }
