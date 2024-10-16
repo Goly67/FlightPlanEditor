@@ -142,33 +142,32 @@
         <button onclick="deleteSelectedPlans()">Delete Selected Plans</button> </div>
     <script>
         function displayFlightPlans() {
-            const flightPlansList = document.getElementById('flightPlansList');
-            const flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
-            if (flightPlans.length === 0) {
-                flightPlansList.innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
-                return;
-            }
-            flightPlansList.innerHTML = flightPlans.map(plan => `
-                <div class="flight-plan" id="plan-${plan.id}">
-                    <input type="checkbox" id="delete-${plan.id}"> 
-                    <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
-                    <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
-                    <p><strong>Flight Type:</strong> ${plan.flightType}</p>
-                    <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
-                    <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
-                    <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
-                    <div class="edit-form">
-                        <label for="sid-${plan.id}">SID:</label>
-                        <input type="text" id="sid-${plan.id}" value="${plan.sid}">
-                        <label for="squawk-${plan.id}">Squawk:</label>
-                        <input type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
-                        <button onclick="saveChanges(${plan.id})">Save Changes</button>
-                        <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
+    const flightPlansList = document.getElementById('flightPlansList');
+    const flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
+    if (flightPlans.length === 0) {
+        flightPlansList.innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
+        return;
+    }
+    flightPlansList.innerHTML = flightPlans.map(plan => `
+        <div class="flight-plan" id="plan-${plan.id}">
+            <input type="checkbox" id="delete-${plan.id}"> 
+            <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
+            <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
+            <p><strong>Flight Type:</strong> ${plan.flightType}</p>
+            <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
+            <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
+            <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
+            <div class="edit-form">
+                <label for="sid-${plan.id}">SID:</label>
+                <input type="text" id="sid-${plan.id}" value="${plan.sid}">
+                <label for="squawk-${plan.id}">Squawk:</label>
+                <input type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
+                <button onclick="saveChanges(${plan.id})">Save Changes</button>
+                <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
+            </div>
+        </div>
+    `).join('');
+}
         function saveChanges(id) {
             let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
             const updatedPlan = flightPlans.find(plan => plan.id === id);
