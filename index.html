@@ -229,6 +229,33 @@
             }
         }
 
+        const flightPlanForm = document.getElementById('flightPlanForm');
+        flightPlanForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent form from submitting normally
+            const callsign = document.getElementById('callsign').value;
+            const departure = document.getElementById('departure').value;
+            const arrival = document.getElementById('arrival').value;
+            const aircraft = document.getElementById('aircraft').value;
+            const flightType = document.getElementById('flightType').value; // Get flight type from dropdown
+
+            saveFlightPlan(callsign, departure, arrival, aircraft, flightType);
+        });
+
+        function saveFlightPlan(callsign, departure, arrival, aircraft, flightType) {
+            const flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
+            const newPlan = {
+                id: Date.now(), 
+                callsign: callsign,
+                departure: departure,
+                arrival: arrival,
+                aircraft: aircraft,
+                flightType: flightType, // Store flightType without quotes
+            };
+            flightPlans.push(newPlan);
+            localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
+            displayFlightPlans(); // Update the flight plan list after saving
+        }
+
         displayFlightPlans();
     </script>
 </body>
