@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://www.iconpacks.net/icons/2/free-airplane-icon-1755-thumb.png" type="image/x-icon">
     <title>Review and Edit Flight Plans</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
@@ -65,7 +66,6 @@
         .flight-plan h2 {
             color: var(--secondary-color);
             margin-top: 0;
-            
             margin-bottom: 1rem;
             font-size: 1.5rem;
             font-weight: 600;
@@ -138,7 +138,8 @@
     <div class="container">
         <h1>Review and Edit Flight Plans</h1>
         <div id="flightPlansList"></div>
-        <button onclick="deleteSelectedPlans()">Delete Selected Plans</button> </div>
+        <button onclick="deleteSelectedPlans()">Delete Selected Plans</button>
+    </div>
     <script>
         function displayFlightPlans() {
             const flightPlansList = document.getElementById('flightPlansList');
@@ -152,7 +153,7 @@
                     <input type="checkbox" id="delete-${plan.id}"> 
                     <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
                     <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
-                    <p><strong>Flight Type:</strong> ${plan.flightType}</p>
+                    <p><strong>Flight Type:</strong> ${plan.flightRule}</p> <!-- Updated to use flightRule -->
                     <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
                     <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
                     <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
