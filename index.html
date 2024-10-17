@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://www.iconpacks.net/icons/2/free-airplane-icon-1755-thumb.png" type="image/x-icon">
     <title>Review and Edit Flight Plans</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
@@ -27,6 +26,7 @@
             padding: 2rem;
             min-height: 100vh;
             box-sizing: border-box;
+            zoom: 0.7; /* Zoom out the entire page */
         }
 
         .container {
@@ -97,12 +97,6 @@
             color: var(--text-color);
         }
 
-        .input-button-container {
-            display: flex;
-            align-items: center; /* Vertically align items */
-            gap: 1rem; /* Add spacing between items */
-        }
-
         button {
             background-color: var(--primary-color);
             color: white;
@@ -139,24 +133,13 @@
             font-size: 1.2rem;
             margin-top: 2rem;
         }
-
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Review and Edit Flight Plans</h1>
         <div id="flightPlansList"></div>
-        <div class="button-group">
-            <button onclick="deleteSelectedPlans()">Delete Selected Plans</button>
-            <button onclick="window.location.href = 'https://goly67.github.io/FlightPlanner/'">Back to Flight Planner</button>
-        </div>
-    </div>
+        <button onclick="deleteSelectedPlans()">Delete Selected Plans</button> </div>
     <script>
         function displayFlightPlans() {
             const flightPlansList = document.getElementById('flightPlansList');
@@ -170,17 +153,17 @@
                     <input type="checkbox" id="delete-${plan.id}"> 
                     <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
                     <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
-                    <p><strong>Flight Type:</strong> ${plan.flightRule}</p>
+                    <p><strong>Flight Type:</strong> ${plan.flightType}</p>
                     <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
                     <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
                     <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
-                   <div class="edit-form">
-                        <label for="sid-${plan.id}">SID:</label><br/>
-                        <div class="input-button-container"> 
-                            <input type="text" id="sid-${plan.id}" value="${plan.sid}">
-                            <button onclick="saveChanges(${plan.id})">Save Changes</button>
-                            <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
-                        </div>
+                    <div class="edit-form">
+                        <label for="sid-${plan.id}">SID:</label>
+                        <input type="text" id="sid-${plan.id}" value="${plan.sid}">
+                        <label for="squawk-${plan.id}">Squawk:</label>
+                        <input type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
+                        <button onclick="saveChanges(${plan.id})">Save Changes</button>
+                        <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
                     </div>
                 </div>
             `).join('');
@@ -192,9 +175,12 @@
             
             if (updatedPlan) {
                 updatedPlan.sid = document.getElementById(`sid-${id}`).value;
+                updatedPlan.squawk = document.getElementById(`squawk-${id}`).value;
                 localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
                 
                 document.getElementById(`sid-display-${id}`).textContent = updatedPlan.sid;
+                document.getElementById(`squawk-display-${id}`).textContent = updatedPlan.squawk || 'Not assigned';
+                
                 alert('Flight plan updated successfully!');
             }
         }
