@@ -78,26 +78,24 @@
         }
 
         .edit-form {
-    display: grid;
-    grid-template-columns: 1fr 2fr; /* Create two columns, one for label and one for input/buttons */
-    gap: 1rem; 
-    margin-top: 1rem;
-}
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
 
-.edit-form label {
-    font-weight: 600;
-    color: var(--text-color);
-    /* Remove position: absolute; */
-}
+        .edit-form label {
+            font-weight: 600;
+            color: var(--text-color);
+        }
 
-.edit-form input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid var(--primary-color);
-    border-radius: 5px;
-    font-size: 1rem;
-    color: var(--text-color);
-}
+        .edit-form input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
 
         .input-button-container {
             display: flex;
@@ -177,7 +175,7 @@
                     <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
                     <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
                    <div class="edit-form">
-                        <label for="sid-${plan.id}">SID:</label>
+                        <label for="sid-${plan.id}">SID:</label><br/>
                         <div class="input-button-container"> 
                             <input type="text" id="sid-${plan.id}" value="${plan.sid}">
                             <button onclick="saveChanges(${plan.id})">Save Changes</button>
