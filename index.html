@@ -156,13 +156,15 @@
                     <p><strong>Flight Type:</strong> ${plan.flightRule}</p> <!-- Updated to use flightRule -->
                     <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
                     <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
-                    <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'To be assigned'}</span></p>
+                    <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
                     <div class="edit-form">
                         <label for="sid-${plan.id}">SID:</label>
                         <input type="text" id="sid-${plan.id}" value="${plan.sid}">
+                        <label for="squawk-${plan.id}">Squawk:</label>
+                        <input type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
                         <button onclick="saveChanges(${plan.id})">Save Changes</button>
                         <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Flight Plan</button>
-                </div>
+                    </div>
                 </div>
             ).join('');
         }
@@ -178,6 +180,8 @@
                 
                 document.getElementById(sid-display-${id}).textContent = updatedPlan.sid;
                 document.getElementById(squawk-display-${id}).textContent = updatedPlan.squawk || 'To be assigned.';
+                
+                alert('Flight plan updated successfully!');
             }
         }
 
@@ -195,6 +199,8 @@
                 if (flightPlans.length === 0) {
                     document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
                 }
+                
+                alert('Flight plan deleted successfully!');
             }
         }
 
@@ -220,6 +226,7 @@
                 if (flightPlans.length === 0) {
                     document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
                 }
+                alert('Selected flight plans deleted successfully!');
             }
         }
 
