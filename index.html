@@ -66,6 +66,7 @@
         .flight-plan h2 {
             color: var(--secondary-color);
             margin-top: 0;
+            
             margin-bottom: 1rem;
             font-size: 1.5rem;
             font-weight: 600;
@@ -138,53 +139,95 @@
     <div class="container">
         <h1>Review and Edit Flight Plans</h1>
         <div id="flightPlansList"></div>
-        <button onclick="deleteSelectedPlans()">Delete Selected Plans</button>
-    </div>
+        <button onclick="deleteSelectedPlans()">Delete Selected Plans</button> </div>
     <script>
-        // Function to display the flight plans
-    function displayFlightPlans() {
-        const flightPlansList = document.getElementById('flightPlansList');
-        const flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
-
-        if (flightPlans.length === 0) {
-            flightPlansList.innerHTML = '<p>No flight plans submitted yet.</p>';
-            return;
-        }
-
-        flightPlansList.innerHTML = flightPlans.map((plan, index) => `
-            <div class="flight-plan">
-                <h3>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h3>
-                <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
-                <p><strong>Flight Rule Type:</strong> ${plan.flightRule}</p>
-                <p><strong>SID:</strong>
-                    <input type="text" id="sid-${index}" value="${plan.sid}" />
-                </p>
-                <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
-                <p><strong>Squawk:</strong> ${plan.squawk || 'To be assigned.'}</p>
-                <button onclick="saveFlightPlan(${index})">Save Changes</button>
+        function displayFlightPlans() {
+    const flightPlansList = document.getElementById('flightPlansList');
+    const flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
+    if (flightPlans.length === 0) {
+        flightPlansList.innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
+        return;
+    }
+    flightPlansList.innerHTML = flightPlans.map(plan => `
+        <div class="flight-plan" id="plan-${plan.id}">
+            <input type="checkbox" id="delete-${plan.id}"> 
+            <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
+            <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
+            <p><strong>Flight Type:</strong> ${plan.flightType}</p>
+            <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
+            <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
+            <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
+            <div class="edit-form">
+                <label for="sid-${plan.id}">SID:</label>
+                <input type="text" id="sid-${plan.id}" value="${plan.sid}">
+                <label for="squawk-${plan.id}">Squawk:</label>
+                <input type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
+                <button onclick="saveChanges(${plan.id})">Save Changes</button>
+                <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
             </div>
-        `).join('');
-    }
-
-    // Function to save the changes made to the flight plan
-    function saveFlightPlan(index) {
-        const flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
-        const sidInput = document.getElementById(`sid-${index}`);
-
-        if (sidInput) {
-            flightPlans[index].sid = sidInput.value; // Update the SID with the new value
-            localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
-
-            // Notify the user of success
-            alert('Flight plan updated successfully!');
-
-            // Optionally refresh the list to show updated values
-            displayFlightPlans();
+        </div>
+    `).join('');
+}
+        function saveChanges(id) {
+            let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
+            const updatedPlan = flightPlans.find(plan => plan.id === id);
+            
+            if (updatedPlan) {
+                updatedPlan.sid = document.getElementById(`sid-${id}`).value;
+                updatedPlan.squawk = document.getElementById(`squawk-${id}`).value;
+                localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
+                
+                document.getElementById(`sid-display-${id}`).textContent = updatedPlan.sid;
+                document.getElementById(`squawk-display-${id}`).textContent = updatedPlan.squawk || 'Not assigned';
+                
+                alert('Flight plan updated successfully!');
+            }
         }
-    }
 
-    // Listen for flightPlanUpdated event
-    window.addEventListener('flightPlanUpdated', displayFlightPlans);
+        function deletePlan(id) {
+            if (confirm('Are you sure you want to delete this flight plan?')) {
+                let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
+                flightPlans = flightPlans.filter(plan => plan.id !== id);
+                localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
+                
+                const planElement = document.getElementById(`plan-${id}`);
+                if (planElement) {
+                    planElement.remove();
+                }
+                
+                if (flightPlans.length === 0) {
+                    document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
+                }
+                
+                alert('Flight plan deleted successfully!');
+            }
+        }
+
+        function deleteSelectedPlans() {
+            if (confirm('Are you sure you want to delete the selected flight plans?')) {
+                let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
+                const selectedIds = [];
+                for (let i = 0; i < flightPlans.length; i++) {
+                    if (document.getElementById(`delete-${flightPlans[i].id}`).checked) {
+                        selectedIds.push(flightPlans[i].id);
+                    }
+                }
+                flightPlans = flightPlans.filter(plan => !selectedIds.includes(plan.id));
+                localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
+
+                selectedIds.forEach(id => {
+                    const planElement = document.getElementById(`plan-${id}`);
+                    if (planElement) {
+                        planElement.remove();
+                    }
+                });
+
+                if (flightPlans.length === 0) {
+                    document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
+                }
+                alert('Selected flight plans deleted successfully!');
+            }
+        }
 
         displayFlightPlans();
     </script>
