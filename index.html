@@ -78,30 +78,31 @@
         }
 
         .edit-form {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Create two columns, one for label and one for input/buttons */
+    gap: 1rem; 
+    margin-top: 1rem;
+}
+
+.edit-form label {
+    font-weight: 600;
+    color: var(--text-color);
+    /* Remove position: absolute; */
+}
+
+.edit-form input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    font-size: 1rem;
+    color: var(--text-color);
+}
 
         .input-button-container {
             display: flex;
             align-items: center; /* Vertically align items */
             gap: 1rem; /* Add spacing between items */
-        }
-
-        .edit-form label {
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .edit-form input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--primary-color);
-            border-radius: 5px;
-            font-size: 1rem;
-            color: var(--text-color);
         }
 
         button {
