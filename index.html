@@ -139,7 +139,9 @@
     <div class="container">
         <h1>Review and Edit Flight Plans</h1>
         <div id="flightPlansList"></div>
-        <button onclick="deleteSelectedPlans()">Delete Selected Plans</button> </div>
+        <button onclick="deleteSelectedPlans()">Delete Selected Plans</button>
+        <button onclick="goToFlightPlanner()">Back to Flight Planner</button> 
+    </div>
     <script>
         function displayFlightPlans() {
             const flightPlansList = document.getElementById('flightPlansList');
@@ -228,6 +230,10 @@
                 }
                 alert('Selected flight plans deleted successfully!');
             }
+        }
+
+        function goToFlightPlanner() {
+            window.location.href = 'https://goly67.github.io/FlightPlanner/'; 
         }
 
         displayFlightPlans();
