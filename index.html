@@ -153,10 +153,10 @@
             <input type="checkbox" id="delete-${plan.id}"> 
             <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
             <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
-            <p><strong>Flight Rule Type:</strong> ${plan.flightRule}</p>  
-            <p><strong>SID:</strong> <span id="sid-${plan.id}">${plan.sid}</span></p>
+            <p><strong>Flight Type:</strong> ${plan.flightType}</p>
+            <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
             <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
-            <p><strong>Squawk:</strong> <span id="squawk-${plan.id}">${plan.squawk ? plan.squawk : 'Not assigned'}</span></p>
+            <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'To be assigned'}</span></p>
             <div class="edit-form">
                 <label for="sid-${plan.id}">SID:</label>
                 <input type="text" id="sid-${plan.id}" value="${plan.sid}">
@@ -175,9 +175,8 @@
                 updatedPlan.squawk = document.getElementById(`squawk-${id}`).value;
                 localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
                 
-                // Update the displayed SID and Squawk
-                document.getElementById(`sid-${id}`).textContent = updatedPlan.sid;
-                document.getElementById(`squawk-${id}`).textContent = updatedPlan.squawk ? updatedPlan.squawk : 'Not assigned';
+                document.getElementById(`sid-display-${id}`).textContent = updatedPlan.sid;
+                document.getElementById(`squawk-display-${id}`).textContent = updatedPlan.squawk || 'Not assigned';
                 
                 alert('Flight plan updated successfully!');
             }
@@ -198,6 +197,7 @@
                     document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
                 }
                 
+                alert('Flight plan deleted successfully!');
             }
         }
 
@@ -223,6 +223,7 @@
                 if (flightPlans.length === 0) {
                     document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
                 }
+                alert('Selected flight plans deleted successfully!');
             }
         }
 
