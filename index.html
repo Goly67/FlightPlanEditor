@@ -178,8 +178,6 @@
                 
                 document.getElementById(`sid-display-${id}`).textContent = updatedPlan.sid;
                 document.getElementById(`squawk-display-${id}`).textContent = updatedPlan.squawk || 'To be assigned.';
-                
-                alert('Flight plan updated successfully!');
             }
         }
 
@@ -197,8 +195,6 @@
                 if (flightPlans.length === 0) {
                     document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
                 }
-                
-                alert('Flight plan deleted successfully!');
             }
         }
 
@@ -224,7 +220,6 @@
                 if (flightPlans.length === 0) {
                     document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
                 }
-                alert('Selected flight plans deleted successfully!');
             }
         }
 
