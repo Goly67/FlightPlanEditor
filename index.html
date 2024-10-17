@@ -133,14 +133,24 @@
             font-size: 1.2rem;
             margin-top: 2rem;
         }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Review and Edit Flight Plans</h1>
         <div id="flightPlansList"></div>
-        <button onclick="deleteSelectedPlans()">Delete Selected Plans</button> </div> <br/>
-        <button onclick="window.location.href = 'https://goly67.github.io/FlightPlanner/'">Back to Flight Planner</button>
+        <div class="button-group">
+            <button onclick="deleteSelectedPlans()">Delete Selected Plans</button>
+            <button onclick="window.location.href = 'https://goly67.github.io/FlightPlanner/'">Back to Flight Planner</button>
+        </div>
+    </div>
     <script>
         function displayFlightPlans() {
             const flightPlansList = document.getElementById('flightPlansList');
@@ -154,7 +164,7 @@
                     <input type="checkbox" id="delete-${plan.id}"> 
                     <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
                     <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
-                    <p><strong>Flight Type:</strong> ${plan.flightType}</p>
+                    <p><strong>Flight Type:</strong> ${plan.flightRule}</p>
                     <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
                     <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
                     <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
