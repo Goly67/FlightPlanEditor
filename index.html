@@ -148,7 +148,7 @@
                 flightPlansList.innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
                 return;
             }
-            flightPlansList.innerHTML = flightPlans.map(plan => `
+            flightPlansList.innerHTML = flightPlans.map(plan => 
                 <div class="flight-plan" id="plan-${plan.id}">
                     <input type="checkbox" id="delete-${plan.id}"> 
                     <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
@@ -164,7 +164,7 @@
                         <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Flight Plan</button>
                 </div>
                 </div>
-            `).join('');
+            ).join('');
         }
 
         function saveChanges(id) {
@@ -172,12 +172,12 @@
             const updatedPlan = flightPlans.find(plan => plan.id === id);
             
             if (updatedPlan) {
-                updatedPlan.sid = document.getElementById(`sid-${id}`).value;
-                updatedPlan.squawk = document.getElementById(`squawk-${id}`).value;
+                updatedPlan.sid = document.getElementById(sid-${id}).value;
+                updatedPlan.squawk = document.getElementById(squawk-${id}).value;
                 localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
                 
-                document.getElementById(`sid-display-${id}`).textContent = updatedPlan.sid;
-                document.getElementById(`squawk-display-${id}`).textContent = updatedPlan.squawk || 'To be assigned.';
+                document.getElementById(sid-display-${id}).textContent = updatedPlan.sid;
+                document.getElementById(squawk-display-${id}).textContent = updatedPlan.squawk || 'To be assigned.';
             }
         }
 
@@ -187,7 +187,7 @@
                 flightPlans = flightPlans.filter(plan => plan.id !== id);
                 localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
                 
-                const planElement = document.getElementById(`plan-${id}`);
+                const planElement = document.getElementById(plan-${id});
                 if (planElement) {
                     planElement.remove();
                 }
@@ -203,7 +203,7 @@
                 let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
                 const selectedIds = [];
                 for (let i = 0; i < flightPlans.length; i++) {
-                    if (document.getElementById(`delete-${flightPlans[i].id}`).checked) {
+                    if (document.getElementById(delete-${flightPlans[i].id}).checked) {
                         selectedIds.push(flightPlans[i].id);
                     }
                 }
@@ -211,7 +211,7 @@
                 localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
 
                 selectedIds.forEach(id => {
-                    const planElement = document.getElementById(`plan-${id}`);
+                    const planElement = document.getElementById(plan-${id});
                     if (planElement) {
                         planElement.remove();
                     }
@@ -223,38 +223,7 @@
             }
         }
 
-// Listen for the custom event that signals a flight plan update
-window.addEventListener('flightPlanUpdated', function() {
-    // Refresh the flight plans displayed on the page
-    displayFlightPlans();
-});
-
-// Function to display the flight plans (assuming flightPlansList is a container for flight plans)
-function displayFlightPlans() {
-    const flightPlansList = document.getElementById('flightPlansList');
-    const flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
-    
-    if (flightPlans.length === 0) {
-        flightPlansList.innerHTML = '<p>No flight plans submitted yet.</p>';
-        return;
-    }
-
-    flightPlansList.innerHTML = flightPlans.map(plan => `
-        <div class="flight-plan">
-            <h3>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h3>
-            <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
-            <p><strong>Flight Rule Type:</strong> ${plan.flightRule}</p>
-            <p><strong>SID:</strong> ${plan.sid}</p>
-            <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
-            <p><strong>Squawk:</strong> ${plan.squawk || 'To be assigned'}</p>
-        </div>
-    `).join('');
-}
-
-// Initial call to display flight plans when the page first loads
-displayFlightPlans();
-
-
+        displayFlightPlans();
     </script>
 </body>
 </html>
