@@ -223,7 +223,14 @@
             }
         }
 
-        displayFlightPlans();
+        // Listen for the custom 'flightPlanUpdated' event to reload flight plans when submitted
+window.addEventListener('flightPlanUpdated', function () {
+    displayFlightPlans();
+});
+
+// Initial call to display flight plans
+displayFlightPlans();
+
     </script>
 </body>
 </html>
