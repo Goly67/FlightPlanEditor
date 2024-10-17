@@ -156,7 +156,7 @@
             <p><strong>Flight Rule Type:</strong> ${plan.flightRule}</p>  
             <p><strong>SID:</strong> <span id="sid-${plan.id}">${plan.sid}</span></p>
             <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
-            <p><strong>Squawk:</strong> <span id="squawk-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
+            <p><strong>Squawk:</strong> <span id="squawk-${plan.id}">${plan.squawk ? plan.squawk : 'Not assigned'}</span></p>
             <div class="edit-form">
                 <label for="sid-${plan.id}">SID:</label>
                 <input type="text" id="sid-${plan.id}" value="${plan.sid}">
@@ -177,7 +177,7 @@
                 
                 // Update the displayed SID and Squawk
                 document.getElementById(`sid-${id}`).textContent = updatedPlan.sid;
-                document.getElementById(`squawk-${id}`).textContent = updatedPlan.squawk || 'Not assigned';
+                document.getElementById(`squawk-${id}`).textContent = updatedPlan.squawk ? updatedPlan.squawk : 'Not assigned';
                 
                 alert('Flight plan updated successfully!');
             }
