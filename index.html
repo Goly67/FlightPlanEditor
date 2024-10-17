@@ -78,9 +78,16 @@
         }
 
         .edit-form {
-            display: grid;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 1rem;
-            margin-top: 1rem;
+        }
+
+        .input-button-container {
+            display: flex;
+            align-items: center; /* Vertically align items */
+            gap: 1rem; /* Add spacing between items */
         }
 
         .edit-form label {
@@ -168,11 +175,13 @@
                     <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
                     <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
                     <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
-                    <div class="edit-form">
+                   <div class="edit-form">
                         <label for="sid-${plan.id}">SID:</label>
-                        <input type="text" id="sid-${plan.id}" value="${plan.sid}">
-                        <button onclick="saveChanges(${plan.id})">Save Changes</button>
-                        <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
+                        <div class="input-button-container"> 
+                            <input type="text" id="sid-${plan.id}" value="${plan.sid}">
+                            <button onclick="saveChanges(${plan.id})">Save Changes</button>
+                            <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
+                        </div>
                     </div>
                 </div>
             `).join('');
