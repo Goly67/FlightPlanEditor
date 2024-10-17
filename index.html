@@ -159,8 +159,6 @@
                     <div class="edit-form">
                         <label for="sid-${plan.id}">SID:</label>
                         <input type="text" id="sid-${plan.id}" value="${plan.sid}">
-                        <label for="squawk-${plan.id}">Squawk:</label>
-                        <input type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
                         <button onclick="saveChanges(${plan.id})">Save Changes</button>
                         <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
                     </div>
@@ -174,12 +172,9 @@
             
             if (updatedPlan) {
                 updatedPlan.sid = document.getElementById(`sid-${id}`).value;
-                updatedPlan.squawk = document.getElementById(`squawk-${id}`).value;
                 localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
                 
                 document.getElementById(`sid-display-${id}`).textContent = updatedPlan.sid;
-                document.getElementById(`squawk-display-${id}`).textContent = updatedPlan.squawk || 'Not assigned';
-                
                 alert('Flight plan updated successfully!');
             }
         }
