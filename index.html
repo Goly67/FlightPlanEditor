@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://www.iconpacks.net/icons/2/free-airplane-icon-1755-thumb.png" type="image/x-icon">
     <title>Review and Edit Flight Plans</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
@@ -97,6 +98,13 @@
             color: var(--text-color);
         }
 
+        .button-container {
+            display: flex;
+            justify-content: space-between; /* Space between buttons */
+            margin-top: 2rem; /* Add margin for spacing */
+        }
+
+
         button {
             background-color: var(--primary-color);
             color: white;
@@ -158,8 +166,10 @@
     <div class="container">
         <h1>Review and Edit Flight Plans</h1>
         <div id="flightPlansList"></div>
-        <button onclick="deleteSelectedPlans()">Delete Selected Plans</button>
-        <button onclick="goToFlightPlanner()">Back to Flight Planner</button> 
+        <div class="button-container">
+            <button onclick="deleteSelectedPlans()">Delete Selected Plans</button>
+            <button onclick="goToFlightPlanner()">Back to Flight Planner</button>
+        </div>        
     </div>
     <script>
         function displayFlightPlans() {
