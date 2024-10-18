@@ -133,6 +133,25 @@
             font-size: 1.2rem;
             margin-top: 2rem;
         }
+
+        input[type="checkbox"] {
+            width: 30px;
+            height: 30px;
+            accent-color: var(--primary-color); /* Changes the color of the checkbox */
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="checkbox"]:hover {
+            border-color: var(--accent-color);
+            transform: scale(1.1); /* Increases size on hover */
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: var(--primary-color);
+            border-color: var(--accent-color);
+        }
+
     </style>
 </head>
 <body>
