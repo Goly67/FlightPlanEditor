@@ -66,16 +66,19 @@
 
         .flight-plan h2 {
             color: var(--secondary-color);
-            margin-top: 0;
-            
+            text-align: center; /* Center the text */
+            margin-top: -6%;
             margin-bottom: 1rem;
-            font-size: 1.5rem;
+            font-size: 2.1rem;
             font-weight: 600;
+            border-bottom: 2px solid var(--primary-color); /* Keep the bottom border for style */
+            padding-bottom: 0.5rem; /* Spacing below the title */
         }
 
         .flight-plan p {
             margin: 0.5rem 0;
             color: var(--text-color);
+            font-size: 110%;
         }
 
         .edit-form {
@@ -144,16 +147,18 @@
         }
 
         input[type="checkbox"] {
+            margin-left: 95%; /* Adds some spacing from the content */
             width: 30px;
             height: 30px;
             accent-color: var(--primary-color); /* Changes the color of the checkbox */
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: -1%;
         }
 
         input[type="checkbox"]:hover {
-            border-color: var(--accent-color);
-            transform: scale(1.1); /* Increases size on hover */
+         border-color: var(--accent-color);
+         transform: scale(1.1); /* Increases size on hover */
         }
 
         input[type="checkbox"]:checked {
