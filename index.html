@@ -60,14 +60,14 @@
         }
 
         .flight-plan:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transform: translateY(-5px);
-        }
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
 
         .flight-plan h2 {
             color: var(--secondary-color);
             text-align: center; /* Center the text */
-            margin-top: -6%;
+            margin-top: -7%;
             margin-bottom: 1rem;
             font-size: 2.1rem;
             font-weight: 600;
@@ -101,6 +101,13 @@
             color: var(--text-color);
             margin-top: -0.7rem;
         }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color); /* Red border */
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.3);
+            background-color: white;
+        }   
 
         .button-container {
             display: flex;
@@ -147,24 +154,46 @@
         }
 
         input[type="checkbox"] {
-            margin-left: 95%; /* Adds some spacing from the content */
-            width: 30px;
-            height: 30px;
-            accent-color: var(--primary-color); /* Changes the color of the checkbox */
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: -1%;
-        }
+    margin-left: 95%; /* Adds some spacing from the content */
+    width: 40px; /* Increased size */
+    height: 40px; /* Increased size */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: -1.7%;
+    appearance: none; /* Remove default checkbox styling */
+    background-color: transparent; /* No background when not checked */
+    border: 2px solid var(--primary-color); /* Border using primary color */
+    border-radius: 5px; /* Rounded corners */
+    position: relative; /* For positioning the checkmark */
+}
 
-        input[type="checkbox"]:hover {
-         border-color: var(--accent-color);
-         transform: scale(1.1); /* Increases size on hover */
-        }
+/* Hover effect */
+input[type="checkbox"]:hover {
+    transform: scale(1.1); /* Increases size on hover */
+}
 
-        input[type="checkbox"]:checked {
-            background-color: var(--primary-color);
-            border-color: var(--accent-color);
-        }
+/* Checked state */
+input[type="checkbox"]:checked {
+    background-color: var(--primary-color); /* Primary color when checked */
+    border-color: var(--primary-color); /* Same color for border */
+}
+
+/* Style for the checkmark */
+input[type="checkbox"]:checked::before {
+    content: '✔'; /* Checkmark character */
+    color: white; /* Color of the checkmark */
+    position: absolute; /* Position the checkmark */
+    left: 50%; /* Center horizontally */
+    top: 50%; /* Center vertically */
+    transform: translate(-50%, -50%); /* Adjust position to truly center it */
+    font-size: 28px; /* Increased checkmark size */
+    transition: transform 0.3s ease; /* Smooth scaling transition */
+}
+
+/* Scale up the checkmark when checked */
+input[type="checkbox"]:checked::before {
+    transform: translate(-50%, -50%) scale(1.2); /* Make the checkmark bigger */
+}
 
     </style>
 </head>
