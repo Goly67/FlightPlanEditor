@@ -90,12 +90,13 @@
         }
 
         .edit-form input {
-            width: 100%;
+            width: 97.4%;
             padding: 0.5rem;
             border: 1px solid var(--primary-color);
             border-radius: 5px;
             font-size: 1rem;
             color: var(--text-color);
+            margin-top: -0.7rem;
         }
 
         .button-container {
@@ -184,16 +185,16 @@
                     <input type="checkbox" id="delete-${plan.id}"> 
                     <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
                     <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
-                    <p><strong>Flight Type:</strong> ${plan.flightType}</p>
+                    <p><strong>Flight Type:</strong> ${plan.flightRule}</p>
                     <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
                     <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
                     <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
                     <div class="edit-form">
-                        <label for="sid-${plan.id}">SID:</label>
+                        <label style="margin-top: -0.5rem;" for="sid-${plan.id}">SID:</label>
                         <input type="text" id="sid-${plan.id}" value="${plan.sid}">
-                        <label for="squawk-${plan.id}">Squawk:</label>
+                        <label style="margin-top: -0.5rem;" for="squawk-${plan.id}">Squawk:</label>
                         <input type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
-                        <button onclick="saveChanges(${plan.id})">Save Changes</button>
+                        <button style="margin-top: 1rem;" onclick="saveChanges(${plan.id})">Save Changes</button>
                         <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
                     </div>
                 </div>
