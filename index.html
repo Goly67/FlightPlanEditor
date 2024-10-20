@@ -72,7 +72,7 @@
             /* Center the text */
             margin-top: -7%;
             margin-bottom: 1rem;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 600;
             border-bottom: 2px solid var(--primary-color);
             /* Keep the bottom border for style */
@@ -170,7 +170,7 @@
             cursor: pointer;
             height: 40px;
             /* Increased size */
-            margin-top: -1.7%;
+            margin-top: -2.5%;
             transition: all 0.3s ease;
             background-color: transparent;
             /* No background when not checked */
@@ -225,7 +225,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h1>Review and Edit Flight Plans</h1>
@@ -253,10 +252,10 @@
                     <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
                     <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
                     <div class="edit-form">
-                        <label style="margin-top: -0.5rem;" for="sid-${plan.id}">SID:</label>
+                        <label style="font-size: 130%; margin-top: -0.5rem;" for="sid-${plan.id}">SID:</label>
                         <input type="text" id="sid-${plan.id}" value="${plan.sid}">
                         <label style="margin-top: -0.5rem;" for="squawk-${plan.id}">Squawk:</label>
-                        <input type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
+                        <input style="font-size: 130%;" type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
                         <button style="margin-top: 1rem;" onclick="saveChanges(${plan.id})">Save Changes</button>
                         <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
                     </div>
