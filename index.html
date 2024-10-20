@@ -245,28 +245,23 @@
         <h1>Review and Edit Flight Plans</h1>
         <div id="flightPlansList"></div>
         <div class="button-container">
-            <button onclick="deleteSelectedPlans()">Delete All Flight Plans</button>
+            <button onclick="deleteSelectedPlans()">Delete All Selected Plans</button>
             <button onclick="goToFlightPlanner()">Back to Flight Planner</button>
         </div>
     </div>
     <script>
-        function displayFlightPlans() {
+        // Function to display flight plans
+function displayFlightPlans() {
     const flightPlansList = document.getElementById('flightPlansList');
-    const countdownTimerDisplay = document.getElementById('countdown-timer');
-    let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
-    
+    const flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
     if (flightPlans.length === 0) {
         flightPlansList.innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
-        countdownTimerDisplay.innerHTML = ''; // Clear timer if no flight plans
         return;
     }
-    
     flightPlansList.innerHTML = flightPlans.map(plan => `
         <div class="flight-plan" id="plan-${plan.id}">
-            <div class="flight-plan-header">
-                <input type="checkbox" id="delete-${plan.id}"> 
-                <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
-            </div>
+            <input type="checkbox" id="delete-${plan.id}"> 
+            <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
             <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
             <p><strong>Flight Type:</strong> ${plan.flightRule}</p>
             <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
@@ -282,70 +277,47 @@
             </div>
         </div>
     `).join('');
-
-    // Start the countdown timer for 25 minutes (1500 seconds)
-    let countdownTime = 1500; // 25 minutes in seconds
-    const countdownInterval = setInterval(() => {
-        const minutes = Math.floor(countdownTime / 60);
-        const seconds = countdownTime % 60;
-        countdownTimerDisplay.innerHTML = `Time Remaining: ${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
-        
-        if (countdownTime <= 0) {
-            clearInterval(countdownInterval);
-            deleteAllFlightPlans(); // Call the function to delete all plans
-        }
-        
-        countdownTime--; // Decrease the countdown time
-    }, 1000); // Update every second
 }
 
-// Function to delete all flight plans
-function deleteAllFlightPlans() {
-    localStorage.removeItem('flightPlans'); // Clear all flight plans from localStorage
-    document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
-    document.getElementById('countdown-timer').innerHTML = ''; // Clear timer display
-    alert('All flight plans have been deleted due to timeout.');
+// Function to save changes to a flight plan
+function saveChanges(id) {
+    let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
+    const updatedPlan = flightPlans.find(plan => plan.id === id);
+
+    if (updatedPlan) {
+        updatedPlan.sid = document.getElementById(`sid-${id}`).value;
+        updatedPlan.squawk = document.getElementById(`squawk-${id}`).value;
+        localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
+
+        document.getElementById(`sid-display-${id}`).textContent = updatedPlan.sid;
+        document.getElementById(`squawk-display-${id}`).textContent = updatedPlan.squawk || 'Not assigned';
+
+        alert('Flight plan updated successfully!');
+    }
 }
 
-// Add the event listener to load flight plans
-document.addEventListener("DOMContentLoaded", displayFlightPlans);
+// Function to delete a single flight plan
+function deletePlan(id) {
+    if (confirm('Are you sure you want to delete this flight plan?')) {
+        let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
+        flightPlans = flightPlans.filter(plan => plan.id !== id);
+        localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
 
-        function saveChanges(id) {
-            let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
-            const updatedPlan = flightPlans.find(plan => plan.id === id);
-
-            if (updatedPlan) {
-                updatedPlan.sid = document.getElementById(`sid-${id}`).value;
-                updatedPlan.squawk = document.getElementById(`squawk-${id}`).value;
-                localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
-
-                document.getElementById(`sid-display-${id}`).textContent = updatedPlan.sid;
-                document.getElementById(`squawk-display-${id}`).textContent = updatedPlan.squawk || 'Not assigned';
-
-                alert('Flight plan updated successfully!');
-            }
+        const planElement = document.getElementById(`plan-${id}`);
+        if (planElement) {
+            planElement.remove();
         }
 
-        function deletePlan(id) {
-            if (confirm('Are you sure you want to delete this flight plan?')) {
-                let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
-                flightPlans = flightPlans.filter(plan => plan.id !== id);
-                localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
-
-                const planElement = document.getElementById(`plan-${id}`);
-                if (planElement) {
-                    planElement.remove();
-                }
-
-                if (flightPlans.length === 0) {
-                    document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
-                }
-
-                alert('Flight plan deleted successfully!');
-            }
+        if (flightPlans.length === 0) {
+            document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
         }
 
-        function deleteSelectedPlans() {
+        alert('Flight plan deleted successfully!');
+    }
+}
+
+// Function to delete selected flight plans
+function deleteSelectedPlans() {
         if (confirm('Are you sure you want to delete all flight plans?')) {
             let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
 
@@ -362,11 +334,14 @@ document.addEventListener("DOMContentLoaded", displayFlightPlans);
         }
     }
 
-        function goToFlightPlanner() {
-            window.location.href = 'https://goly67.github.io/FlightPlanner/';
-        }
+// Function to go to the flight planner page
+function goToFlightPlanner() {
+    window.location.href = 'https://goly67.github.io/FlightPlanner/';
+}
 
-        displayFlightPlans();
+// Display flight plans on page load
+displayFlightPlans();
+
     </script>
 </body>
 </html>
