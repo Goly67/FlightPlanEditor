@@ -51,6 +51,8 @@
             letter-spacing: 2px;
             margin-top: -1.4rem;
         }
+        
+        
 
         .flight-plan {
             background-color: rgba(255, 255, 255, 0.8);
@@ -67,18 +69,31 @@
         }
 
         .flight-plan h2 {
-            color: var(--secondary-color);
-            text-align: center;
-            /* Center the text */
-            margin-top: -7%;
-            margin-bottom: 1rem;
-            font-size: 1.8rem;
-            font-weight: 600;
-            border-bottom: 2px solid var(--primary-color);
-            /* Keep the bottom border for style */
-            padding-bottom: 0.5rem;
-            /* Spacing below the title */
-        }
+    color: var(--secondary-color);
+    text-align: center; /* Center the text */
+    margin-top: -7%;
+    margin-bottom: 1rem;
+    font-size: 1.8rem; /* Default font size */
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color); /* Keep the bottom border for style */
+    padding-bottom: 0.5rem; /* Spacing below the title */
+    overflow: hidden; /* Prevent text overflow */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Show ellipsis if text overflows */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) { /* Adjust this value as needed */
+    .flight-plan h2 {
+        font-size: 1.4rem; /* Smaller font size on smaller screens */
+    }
+}
+
+@media (max-width: 400px) { /* Further adjustments for very small screens */
+    .flight-plan h2 {
+        font-size: 1.2rem; /* Even smaller font size */
+    }
+}
 
         .flight-plan p {
             margin: 0.5rem 0;
@@ -165,7 +180,7 @@
         input[type="checkbox"] {
             width: 40px;
             /* Increased size */
-            margin-left: 95%;
+            margin-left: ;
             /* Adds some spacing from the content */
             cursor: pointer;
             height: 40px;
@@ -230,38 +245,70 @@
         <h1>Review and Edit Flight Plans</h1>
         <div id="flightPlansList"></div>
         <div class="button-container">
-            <button onclick="deleteSelectedPlans()">Delete Selected Plans</button>
+            <button onclick="deleteSelectedPlans()">Delete All Flight Plans</button>
             <button onclick="goToFlightPlanner()">Back to Flight Planner</button>
         </div>
     </div>
     <script>
         function displayFlightPlans() {
-            const flightPlansList = document.getElementById('flightPlansList');
-            const flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
-            if (flightPlans.length === 0) {
-                flightPlansList.innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
-                return;
-            }
-            flightPlansList.innerHTML = flightPlans.map(plan => `
-                <div class="flight-plan" id="plan-${plan.id}">
-                    <input type="checkbox" id="delete-${plan.id}"> 
-                    <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
-                    <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
-                    <p><strong>Flight Type:</strong> ${plan.flightRule}</p>
-                    <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
-                    <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
-                    <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
-                    <div class="edit-form">
-                        <label style="font-size: 130%; margin-top: -0.5rem;" for="sid-${plan.id}">SID:</label>
-                        <input type="text" id="sid-${plan.id}" value="${plan.sid}">
-                        <label style="margin-top: -0.5rem;" for="squawk-${plan.id}">Squawk:</label>
-                        <input style="font-size: 130%;" type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
-                        <button style="margin-top: 1rem;" onclick="saveChanges(${plan.id})">Save Changes</button>
-                        <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
-                    </div>
-                </div>
-            `).join('');
+    const flightPlansList = document.getElementById('flightPlansList');
+    const countdownTimerDisplay = document.getElementById('countdown-timer');
+    let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
+    
+    if (flightPlans.length === 0) {
+        flightPlansList.innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
+        countdownTimerDisplay.innerHTML = ''; // Clear timer if no flight plans
+        return;
+    }
+    
+    flightPlansList.innerHTML = flightPlans.map(plan => `
+        <div class="flight-plan" id="plan-${plan.id}">
+            <div class="flight-plan-header">
+                <input type="checkbox" id="delete-${plan.id}"> 
+                <h2>${plan.callsign} - ${plan.departure} to ${plan.arrival}</h2>
+            </div>
+            <p><strong>Aircraft:</strong> ${plan.aircraft}</p>
+            <p><strong>Flight Type:</strong> ${plan.flightRule}</p>
+            <p><strong>SID:</strong> <span id="sid-display-${plan.id}">${plan.sid}</span></p>
+            <p><strong>Cruising Level:</strong> ${plan.cruisingLevel}</p>
+            <p><strong>Squawk:</strong> <span id="squawk-display-${plan.id}">${plan.squawk || 'Not assigned'}</span></p>
+            <div class="edit-form">
+                <label style="font-size: 130%; margin-top: -0.5rem;" for="sid-${plan.id}">SID:</label>
+                <input type="text" id="sid-${plan.id}" value="${plan.sid}">
+                <label style="margin-top: -0.5rem;" for="squawk-${plan.id}">Squawk:</label>
+                <input style="font-size: 130%;" type="text" id="squawk-${plan.id}" value="${plan.squawk || ''}">
+                <button style="margin-top: 1rem;" onclick="saveChanges(${plan.id})">Save Changes</button>
+                <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
+            </div>
+        </div>
+    `).join('');
+
+    // Start the countdown timer for 25 minutes (1500 seconds)
+    let countdownTime = 1500; // 25 minutes in seconds
+    const countdownInterval = setInterval(() => {
+        const minutes = Math.floor(countdownTime / 60);
+        const seconds = countdownTime % 60;
+        countdownTimerDisplay.innerHTML = `Time Remaining: ${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
+        
+        if (countdownTime <= 0) {
+            clearInterval(countdownInterval);
+            deleteAllFlightPlans(); // Call the function to delete all plans
         }
+        
+        countdownTime--; // Decrease the countdown time
+    }, 1000); // Update every second
+}
+
+// Function to delete all flight plans
+function deleteAllFlightPlans() {
+    localStorage.removeItem('flightPlans'); // Clear all flight plans from localStorage
+    document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
+    document.getElementById('countdown-timer').innerHTML = ''; // Clear timer display
+    alert('All flight plans have been deleted due to timeout.');
+}
+
+// Add the event listener to load flight plans
+document.addEventListener("DOMContentLoaded", displayFlightPlans);
 
         function saveChanges(id) {
             let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
@@ -299,30 +346,21 @@
         }
 
         function deleteSelectedPlans() {
-            if (confirm('Are you sure you want to delete the selected flight plans?')) {
-                let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
-                const selectedIds = [];
-                for (let i = 0; i < flightPlans.length; i++) {
-                    if (document.getElementById(`delete-${flightPlans[i].id}`).checked) {
-                        selectedIds.push(flightPlans[i].id);
-                    }
-                }
-                flightPlans = flightPlans.filter(plan => !selectedIds.includes(plan.id));
-                localStorage.setItem('flightPlans', JSON.stringify(flightPlans));
+        if (confirm('Are you sure you want to delete all flight plans?')) {
+            let flightPlans = JSON.parse(localStorage.getItem('flightPlans')) || [];
 
-                selectedIds.forEach(id => {
-                    const planElement = document.getElementById(`plan-${id}`);
-                    if (planElement) {
-                        planElement.remove();
-                    }
-                });
-
-                if (flightPlans.length === 0) {
-                    document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
-                }
-                alert('Selected flight plans deleted successfully!');
+            // Check all checkboxes automatically
+            for (let i = 0; i < flightPlans.length; i++) {
+                document.getElementById(`delete-${flightPlans[i].id}`).checked = true;
             }
+
+            // Delete all flight plans
+            localStorage.removeItem('flightPlans');
+            document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
+
+            alert('All flight plans deleted successfully!');
         }
+    }
 
         function goToFlightPlanner() {
             window.location.href = 'https://goly67.github.io/FlightPlanner/';
