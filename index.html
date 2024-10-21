@@ -269,8 +269,6 @@
             const flightPlansList = document.getElementById('flightPlansList');
             const plans = JSON.parse(localStorage.getItem('flightPlans')) || [];
 
-            console.log('Flight Plans:', plans); // Log the retrieved plans
-
             if (plans.length === 0) {
                 flightPlansList.innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
                 return;
@@ -297,6 +295,7 @@
                     <button onclick="saveChanges(${plan.id})">Save Changes</button>
                     <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
                 </div>
+                <p><strong>Time Remaining:</strong> <span id="countdown-${plan.id}">${formatCountdown(remainingTime)}</span></p>
             </div>
         `;
             }).join('');
@@ -314,12 +313,20 @@
             });
         }
 
-
         // Function to start the countdown timer for each flight plan
         function startCountdown(planId, remainingTime) {
-            const intervalId = setTimeout(() => { // Use setTimeout instead of setInterval
-                deletePlan(planId); // Delete the plan after 25 minutes
-            }, 1500000); // 1500000 milliseconds = 25 minutes
+            const countdownDisplay = document.getElementById(`countdown-${planId}`);
+
+            const intervalId = setInterval(() => {
+                remainingTime -= 1000; // Decrease remaining time by 1 second
+
+                if (remainingTime <= 0) {
+                    clearInterval(intervalId); // Stop the countdown when it reaches 0
+                    deletePlan(planId); // Delete the plan after time expires
+                } else {
+                    countdownDisplay.textContent = formatCountdown(remainingTime);
+                }
+            }, 1000); // Update every second
         }
 
 
@@ -363,6 +370,10 @@
             if (flightPlans.length === 0) {
                 document.getElementById('flightPlansList').innerHTML = '<p class="no-plans">No flight plans submitted yet.</p>';
             }
+        }
+
+        function goToFlightPlanner() {
+            window.location.href = 'https://goly67.github.io/FlightPlanner/'; // Replace with your flight planner page URL
         }
 
         // Display flight plans on page load
