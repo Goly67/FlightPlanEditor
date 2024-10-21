@@ -276,7 +276,7 @@
 
             flightPlansList.innerHTML = plans.map(plan => {
                 const currentTime = Date.now();
-                const remainingTime = Math.max(1500000 - (currentTime - plan.timestamp), 0);
+                const remainingTime = Math.max(1500000 - (currentTime - plan.timestamp), 0); // Correct time calculation
 
                 return `
             <div class="flight-plan" id="plan-${plan.id}">
@@ -295,12 +295,11 @@
                     <button onclick="saveChanges(${plan.id})">Save Changes</button>
                     <button class="delete-btn" onclick="deletePlan(${plan.id})">Delete Plan</button>
                 </div>
-                <p><strong>Time Remaining:</strong> <span id="countdown-${plan.id}">${formatCountdown(remainingTime)}</span></p>
             </div>
         `;
             }).join('');
 
-            // Start countdown for each plan
+            // Check and delete expired plans immediately
             plans.forEach(plan => {
                 const currentTime = Date.now();
                 const remainingTime = Math.max(1500000 - (currentTime - plan.timestamp), 0);
@@ -308,7 +307,7 @@
                 if (remainingTime <= 0) {
                     deletePlan(plan.id); // Automatically delete expired plan
                 } else {
-                    startCountdown(plan.id, remainingTime); // Start the countdown
+                    startCountdown(plan.id, remainingTime); // Start the countdown if not expired
                 }
             });
         }
@@ -329,14 +328,14 @@
             }, 1000); // Update every second
         }
 
-
         // Function to format countdown in mm:ss format
         function formatCountdown(timeInMilliseconds) {
             const totalSeconds = Math.floor(timeInMilliseconds / 1000);
-            const minutes = Math.floor(Math.abs(totalSeconds) / 60); // Ensure minutes is not negative
-            const seconds = Math.abs(totalSeconds) % 60; // Ensure seconds is not negative
+            const minutes = Math.floor(totalSeconds / 60); // Ensure minutes is not negative
+            const seconds = totalSeconds % 60; // Ensure seconds is not negative
             return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
+
 
 
         // Function to save changes to a flight plan
@@ -372,6 +371,7 @@
             }
         }
 
+        // Function to navigate back to the flight planner
         function goToFlightPlanner() {
             window.location.href = 'https://goly67.github.io/FlightPlanner/'; // Replace with your flight planner page URL
         }
